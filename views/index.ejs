@@ -1,0 +1,441 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="index.css">
+<body>
+<div class="mainContainer container col-ss-12 col-s-12 col-m-12 col-12 col-l-12">
+    <div class="container topLeftDash">
+      <div class="container menuBar" onclick="
+        document.querySelector('.midLeftDash').classList.toggle('midLeftDashActive');
+        document.querySelector('.bar1').classList.toggle('bar1Active');
+        document.querySelector('.bar2').classList.toggle('bar2Active');
+        document.querySelector('.bar3').classList.toggle('bar3Active');
+        ">
+        <!--<i class="fa fa-bars" aria-hidden="true"></i>-->
+        <div class="bar bar1 col-ss-6 col-s-6 col-6 col-m-6 col-6 col-l-6"></div>
+        <div class="bar bar2 col-ss-6 col-s-6 col-6 col-m-6 col-6 col-l-6"></div>
+        <div class="bar bar3 col-ss-6 col-s-6 col-6 col-m-6 col-6 col-l-6"></div>
+      </div>
+    </div>
+    <div class="container midSection">
+        <div class="container midLeftDash dash">
+          <div class="container dashContainer">
+          <div class="container createDiv">
+            <button class="createButton" onclick="getPages('/create')">Create</button>
+          </div>
+          <form class="container" id="logOut" action="/logout?_method=DELETE" method="POST">
+            <button type="submit" class="logOut">Log out</button>
+          </form>
+          </div>
+      </div>
+      <div class="container recipes" id="recipes"></div>
+
+  </div>
+</div>
+</body>
+
+<script>
+  window.onload = createCards();
+  let options = document.querySelector('.options');
+  let optionsTab = document.querySelector('.optionsTab');
+  let ellipsis = document.querySelector('.fa-ellipsis-v');
+  let xClose;
+  let links = document.querySelector('.links');
+
+//---Populate recipe card list-----
+
+function createCards(optionsSmaller, optionsExpand) {
+  let recipeContainer = document.querySelector('.recipes');
+  let httpRecipes = new XMLHttpRequest();
+  httpRecipes.onreadystatechange = () => {
+    if (httpRecipes.readyState == XMLHttpRequest.DONE && httpRecipes.status == 200) {
+      let recipes = httpRecipes.responseText;
+      recipes = JSON.parse(recipes);
+      if(recipes.length == 0) {
+        let oopsie = document.createElement('p');
+        let oopsieList = []
+        oopsie.innerHTML = "Looks like there isn't anything here...try adding recipes!";
+        oopsie.classList.add('oopsie');
+        recipeContainer.appendChild(oopsie);
+      } else {
+      recipes.forEach(recipe =>{
+        console.log('Did it');
+        let card = document.createElement("div");
+        card.classList.add("container", "card");
+
+        let titleCard = document.createElement("div");
+        titleCard.setAttribute("id", recipe._id);
+        titleCard.classList.add("container", "titleCard");
+
+        let forImage = document.createElement("div");
+        forImage.classList.add("container", "forImage");
+
+        let optionsWrapper = document.createElement("div");
+        optionsWrapper.classList.add("container", "optionsWrapper");
+
+        let trash = document.createElement("div");
+        trash.classList.add("container", "trash");
+        let edit = document.createElement("div");
+        edit.classList.add("container", "edit");
+        let trashIcon = document.createElement("i");
+        trashIcon.classList.add("fa", "fa-trash-o");
+        let editIcon = document.createElement("i");
+        editIcon.classList.add("fa", "fa-pencil-square-o");
+        trash.appendChild(trashIcon);
+        edit.appendChild(editIcon);
+        optionsWrapper.appendChild(trash);
+        optionsWrapper.appendChild(edit);
+
+
+        edit.addEventListener("click", (event) => {
+          //Request saves recipe id
+          let httpRecipes = new XMLHttpRequest();
+          httpRecipes.open("POST", `/recipeId`, true);
+          httpRecipes.setRequestHeader('Content-Type', 'application/json');
+          let recipeid = name.id;
+          console.log(name.id);
+          httpRecipes.send(JSON.stringify({id: recipeid}));
+          if (this.readyState == 4) {
+            console.log(this.responseText);
+          }
+          //window.location.href = "/view";
+          //Request loads edit view
+          getPages('/edit');
+          //Request populates edit view
+          let httpView = new XMLHttpRequest;
+          httpView.onload = () => {
+          if (httpView.readyState == XMLHttpRequest.DONE && httpView.status == 200) {
+            let recipe = JSON.parse(httpView.responseText);
+            console.log(recipe);
+
+            let ingredientsList = document.querySelector('.ingredientTableFinal');
+            let instructionsList = document.querySelector(".instructionsTableFinal");
+            let editsTitle = document.getElementById('editsTitle');
+            editsTitle.innerHTML = recipe.name;
+            recipe.ingredients.forEach(ingredient => {
+              const cell1 = document.createElement('td');
+              const cell2 = document.createElement('td');
+              const row = document.createElement('tr');
+              console.log(ingredient[0]);
+              cell1.innerText = ingredient[0];
+              console.log(cell1.innerHTML);
+              cell2.innerText = ingredient[1];
+              row.appendChild(cell1);
+              row.appendChild(cell2);
+              cell1.classList.add('ingredient');
+              cell2.classList.add('amount');
+              ingredientsList.appendChild(row);
+
+                cell1.contentEditable = 'true';
+                cell2.contentEditable = 'true';
+            })
+            recipe.instructions.forEach(instruction => {
+              console.log(instruction);
+              const cell3 = document.createElement('td');
+              const row = document.createElement('tr');
+              cell3.innerText = instruction;
+              cell3.classList.add('instruction');
+              row.appendChild(cell3);
+              instructionsList.appendChild(row);
+                cell3.contentEditable = 'true';
+
+            })
+          }
+          }
+          httpView.open("GET", "/getrecipe", true);
+          httpView.send();
+        })
+
+        trash.addEventListener("click", async (event) => {
+          let httpRecipes = new XMLHttpRequest();
+          httpRecipes.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              console.log(this.responseText);
+              //$('.recipes').innerHTML = "";
+              window.location.href = "/home";
+       }
+    };
+          httpRecipes.open("POST", '/delrecipe', true);
+          httpRecipes.setRequestHeader('Content-Type', 'application/json');
+          let recipeid = name.id;
+          console.log(name.id);
+          httpRecipes.send(JSON.stringify({id: recipeid}));
+          await console.log(httpRecipes.responseText);
+
+            });
+
+        let name = document.createElement("p");
+        name.classList.add('title');
+        name.setAttribute("id", recipe._id);
+
+        let Break = document.createElement("div");
+        Break.classList.add('break');
+
+        titleCard.appendChild(name);
+        titleCard.appendChild(Break);
+
+        card.appendChild(titleCard);
+        card.appendChild(forImage);
+        card.appendChild(optionsWrapper);
+;
+        card.classList.add("col-ss-8", "col-s-4", "col-m-4", "col-3", "col-l-3");
+        name.addEventListener("click", (event) => {
+          let httpRecipes = new XMLHttpRequest();
+          httpRecipes.open("POST", `/recipeId`, true);
+          httpRecipes.setRequestHeader('Content-Type', 'application/json');
+          let recipeid = name.id;
+          httpRecipes.send(JSON.stringify({id: recipeid}));
+          if (this.readyState == 4) {
+            console.log(this.responseText);
+          }
+          //window.location.href = "/view";
+          getPages('/view');
+
+          let httpView = new XMLHttpRequest;
+          httpView.onload = () => {
+          if (httpView.readyState == XMLHttpRequest.DONE && httpView.status == 200) {
+            let recipe = JSON.parse(httpView.responseText);
+            console.log(recipe);
+            let ingredientsList = document.querySelector('.ingredientTableFinal');
+            let instructionsList = document.querySelector(".instructionsTableFinal");
+            let viewsTitle = document.getElementById('viewsTitle');
+            viewsTitle.innerHTML = recipe.name;
+            recipe.ingredients.forEach(ingredient => {
+              const cell1 = document.createElement('td');
+              const cell2 = document.createElement('td');
+              const row = document.createElement('tr');
+              console.log(ingredient[0]);
+              cell1.innerText = ingredient[0];
+              console.log(cell1.innerHTML);
+              cell2.innerText = ingredient[1];
+              row.appendChild(cell1);
+              row.appendChild(cell2);
+              cell1.classList.add('ingredient');
+              cell2.classList.add('amount');
+              ingredientsList.appendChild(row);
+
+              cell1.addEventListener('click', () => {
+                cell1.contentEditable = 'true';
+              })
+              cell2.addEventListener('click', () => {
+                cell2.contentEditable = 'true';
+              })
+            })
+            recipe.instructions.forEach(instruction => {
+              console.log(instruction);
+              const cell1 = document.createElement('td');
+              const row = document.createElement('tr');
+              cell1.innerText = instruction;
+              cell1.classList.add('instruction');
+              row.appendChild(cell1);
+              instructionsList.appendChild(row);
+
+            })
+          }
+          }
+          httpView.open("GET", "/getrecipe", true);
+          httpView.send();
+        })
+
+        name.innerHTML = recipe.name;
+        recipeContainer.appendChild(card);
+      })}
+    } else {
+      console.log('no response yet...');
+    }
+  };
+  httpRecipes.open("GET", "/", true);
+  httpRecipes.send();
+};
+
+//-------------VIEW------------------------//
+function views() {
+  console.log('views loaded');
+let httpView = new XMLHttpRequest;
+httpView.onreadystatechange = () => {
+  if (httpView.readyState == XMLHttpRequest.DONE && httpView.status == 200) {
+    let recipe = JSON.parse(httpView.responseText);
+    console.log('This is the recipe');
+    console.log(recipe);
+
+    let ingredientsList = document.querySelector('.ingredientTableFinal');
+    let instructionsList = document.querySelector(".instructionsTableFinal");
+
+    recipe.ingredients.forEach(ingredient => {
+      const cell1 = document.createElement('td');
+      const cell2 = document.createElement('td');
+      const row = document.createElement('tr');
+      console.log(ingredient[0]);
+      cell1.innerText = ingredient[0];
+      console.log(cell1.innerHTML);
+      cell2.innerText = ingredient[1];
+      row.appendChild(cell1);
+      row.appendChild(cell2);
+      cell1.classList.add('ingredient');
+      cell2.classList.add('amount');
+      ingredientsList.appendChild(row);
+
+      cell1.addEventListener('click', () => {
+        cell1.contentEditable = 'true';
+      })
+      cell2.addEventListener('click', () => {
+        cell2.contentEditable = 'true';
+      })
+    })
+    recipe.instructions.forEach(instruction => {
+      console.log(instruction);
+      const cell1 = document.createElement('td');
+      const row = document.createElement('tr');
+      cell1.innerText = instruction;
+      cell1.classList.add('instruction');
+      row.appendChild(cell1);
+      instructionsList.appendChild(row);
+    })
+  }
+}
+httpView.open("GET", "/getrecipe", true);
+httpView.send();
+}
+//-----------------EDITS-------------------------//
+function edits() {
+  console.log('edits loaded');
+let httpView = new XMLHttpRequest;
+httpView.onreadystatechange = () => {
+  if (httpView.readyState == XMLHttpRequest.DONE && httpView.status == 200) {
+    let recipe = JSON.parse(httpView.responseText);
+    console.log('This is the recipe');
+    console.log(recipe);
+
+    let ingredientsList = document.querySelector('.ingredientTableFinal');
+    let instructionsList = document.querySelector(".instructionsTableFinal");
+
+    recipe.ingredients.forEach(ingredient => {
+      const cell1 = document.createElement('td');
+      const cell2 = document.createElement('td');
+      const row = document.createElement('tr');
+      console.log(ingredient[0]);
+      cell1.innerText = ingredient[0];
+      console.log(cell1.innerHTML);
+      cell2.innerText = ingredient[1];
+      row.appendChild(cell1);
+      row.appendChild(cell2);
+      cell1.classList.add('ingredient');
+      cell2.classList.add('amount');
+      ingredientsList.appendChild(row);
+      cell1.contentEditable = 'true';
+      cell2.contentEditable = 'true';
+
+    })
+    recipe.instructions.forEach(instruction => {
+      console.log(instruction);
+      const cell3 = document.createElement('td');
+      const row = document.createElement('tr');
+      cell3.innerText = instruction;
+      cell3.classList.add('instruction');
+      row.appendChild(cell3);
+      instructionsList.appendChild(row);
+      console.log('making content editable');
+      cell3.contentEditable = 'true';
+
+    })
+  }
+}
+httpView.open("GET", "/getrecipe", true);
+httpView.send();
+}
+
+//---------------CREATE---------------------------//
+let ingredientsAdded = [];
+let amountAdded = []
+let instructionsAdded = [];
+function sendRecipe() {
+  if (this.value == "") {
+    alert("You need a title.");
+    return;
+  }
+  let newRecipe;
+  newRecipe = new Object;
+  document.querySelectorAll('.ingredient').forEach(ingredient => {
+    ingredientsAdded.push(ingredient.innerHTML);
+  })
+  document.querySelectorAll('.amount').forEach(amount => {
+    amountAdded.push(amount.innerHTML);
+  })
+  document.querySelectorAll('.instruction').forEach(instruction => {
+    instructionsAdded.push(instruction.innerHTML);
+  })
+  let recipeTogether = ingredientsAdded.map((e, i) => {
+    return [e, amountAdded[i]];
+  }),
+  recipeTitle = document.querySelector('.recipeTitle').innerHTML;
+  newRecipe.name = recipeTitle;
+  newRecipe.ingredients = recipeTogether;
+  newRecipe.instructions = instructionsAdded;
+  let http = new XMLHttpRequest();
+  http.open("POST", "/create", true);
+  http.setRequestHeader('Content-Type', 'application/json');
+  http.send(JSON.stringify(newRecipe));
+  http.onreadystatechange = () => {
+    if (http.readyState == XMLHttpRequest.DONE && http.status == 200) {
+      window.location.href = "/home";
+    } else {
+      console.log('no response yet...');
+    }
+  }
+}
+  function sendEdit() {
+    let edits = {};
+    let ingredients = [];
+    let amounts = [];
+    let instructions = [];
+    document.querySelectorAll('.ingredient').forEach(ing => {
+      console.log('ingredient: ' + ing.innerHTML);
+      ingredients.push(ing.innerHTML);
+    });
+    document.querySelectorAll('.amount').forEach(am => {
+     console.log('amount: ' + am.innerHTML);
+  //   JSON.parse(am)
+      amounts.push(am.innerHTML);
+    });
+    document.querySelectorAll('.instruction').forEach(inst => {
+      console.log(inst.innerHTML);
+      instructions.push(inst.innerHTML);
+    })
+    let recipeTogether = ingredients.map((e, i) => {
+      return [e, amounts[i]];
+    }),
+    submitEdit = document.querySelector('.submitEdit');
+    edits.name = document.getElementById('editsTitle').innerHTML;
+    edits.ingredients = recipeTogether;
+    edits.instructions = instructions;
+    let http = new XMLHttpRequest();
+    http.open('POST', '/edit');
+    http.setRequestHeader('Content-Type', 'application/json');
+    console.log('edits: ' + edits);
+    http.send(JSON.stringify(edits));
+
+    http.onreadystatechange = function() {
+      console.log(http.readyState);
+      window.location.href="/home";
+      //getPages('/home');
+
+    }
+
+  }
+function getPages(page) {
+  let getPage = new XMLHttpRequest();
+  getPage.open('GET', page, true);
+  getPage.onload = function() {
+    if (getPage.status >= 200 && getPage.status < 400) {
+      var resp = getPage.responseText;
+      document.querySelector('.recipes').innerHTML = resp;
+    }
+  };
+getPage.send();
+}
+</script>
+
+</html>

@@ -1,0 +1,173 @@
+<html>
+<div class="container recipes" id="recipes"></div>
+<script>
+  window.onload = createCards();
+  let options = document.querySelector('.options');
+  let optionsTab = document.querySelector('.optionsTab');
+  let ellipsis = document.querySelector('.fa-ellipsis-v');
+  let xClose;
+  let links = document.querySelector('.links');
+
+
+//---Expand/collapse recipe card options -----
+/*  function optionsExpand() {
+    options.classList.add('inactive');
+    ellipsis.classList.add('inactive');
+    setTimeout(() => {
+      optionsTab.classList.add('active');
+      setTimeout(() => {
+        xClose.classList.add('active');
+        links.classList.add('active');
+      }, 125);
+    }, 125);
+  }
+  function optionsSmaller() {
+    optionsTab.classList.remove('active');
+    xClose.classList.remove('active');
+    links.classList.remove('active');
+    setTimeout(() => {
+      options.classList.remove('inactive');
+      ellipsis.classList.remove('inactive');
+    }, 125);
+  }*/
+//---End--------------------------------
+
+//---Populate recipe card list-----
+
+function createCards(optionsSmaller, optionsExpand) {
+  let recipeContainer = document.querySelector('.recipes');
+  let httpRecipes = new XMLHttpRequest();
+  httpRecipes.onreadystatechange = () => {
+    if (httpRecipes.readyState == XMLHttpRequest.DONE && httpRecipes.status == 200) {
+      let recipes = httpRecipes.responseText;
+      recipes = JSON.parse(recipes);
+      if(recipes.length == 0) {
+        let oopsie = document.createElement('p');
+        let oopsieList = []
+        oopsie.innerHTML = "Looks like there isn't anything here...try adding recipes!";
+        oopsie.classList.add('oopsie');
+        recipeContainer.appendChild(oopsie);
+      } else {
+      recipes.forEach(recipe =>{
+        console.log('Did it');
+        let card = document.createElement("div");
+        card.classList.add("container", "card");
+
+        let titleCard = document.createElement("div");
+        titleCard.setAttribute("id", recipe._id);
+        titleCard.classList.add("container", "titleCard");
+
+        let forImage = document.createElement("div");
+        forImage.classList.add("container", "forImage");
+
+        let optionss = document.createElement("div");
+        optionss.classList.add("container", "options");
+
+
+        optionss.addEventListener("click", () => {
+          optionss.classList.add('inactive');
+          ellipsis.classList.add('inactive');
+          setTimeout(() => {
+            optionsTab.classList.add('active');
+            setTimeout(() => {
+              x.classList.add('xActive');
+              links.classList.add('active');
+            }, 125);
+          }, 125);
+        });
+
+        let ellipsis = document.createElement("i");
+        ellipsis.classList.add("fa", "fa-ellipsis-v", "fa-2x");
+
+        let name = document.createElement("p");
+        name.classList.add('title');
+        name.setAttribute("id", recipe._id);
+
+        let Break = document.createElement("div");
+        Break.classList.add('break');
+
+        let optionsTab = document.createElement("div");
+        optionsTab.classList.add("container", "optionsTab");
+
+        let xRecipes = document.createElement("div");
+
+        xRecipes.addEventListener("click", () => {
+          optionsTab.classList.remove('active');
+          xRecipes.classList.remove('xActive');
+          links.classList.remove('active');
+          setTimeout(() => {
+            optionss.classList.remove('inactive');
+            ellipsis.classList.remove('inactive');
+          }, 125);
+        });
+
+        xRecipes.classList.add("container", "x");
+        xRecipes.innerHTML = "x";
+
+        let links = document.createElement("div");
+        links.classList.add("container", "links");
+
+        let edit = document.createElement("button");
+        edit.classList.add("editLink");
+        edit.innerHTML = "Edit";
+
+        let delet = document.createElement("button");
+        delet.innerHTML = "Delete";
+        delet.addEventListener("click", async (event) => {
+          let httpRecipes = new XMLHttpRequest();
+          httpRecipes.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              console.log(this.responseText);
+              $('.recipes').innerHTML = "";
+              createCards();
+       }
+    };
+          http.open("POST", '/delrecipe', true);
+          http.setRequestHeader('Content-Type', 'application/json');
+          let recipeid = name.id;
+          console.log(name.id);
+          http.send(JSON.stringify({id: recipeid}));
+          await console.log(http.responseText);
+
+        })
+        let share = document.createElement("button");
+        share.innerHTML = "Share";
+
+        links.appendChild(xRecipes);
+        links.appendChild(edit);
+        links.appendChild(delet);
+        links.appendChild(share);
+        optionsTab.appendChild(links);
+
+        forImage.appendChild(optionsTab);
+        optionss.appendChild(ellipsis);
+        titleCard.appendChild(name);
+        titleCard.appendChild(Break);
+
+        card.appendChild(titleCard);
+        card.appendChild(forImage);
+        card.appendChild(optionss);
+        name.addEventListener("click", (event) => {
+          let httpRecipes = new XMLHttpRequest();
+          httpRecipes.open("POST", `/recipeId`, true);
+          httpRecipes.setRequestHeader('Content-Type', 'application/json');
+          let recipeid = event.target.id;
+          console.log(event.target.id);
+          httpRecipes.send(JSON.stringify({id: recipeid}));
+              //window.location.href = "/view";
+              $(".mainActive").load("view.ejs");
+        })
+
+        name.innerHTML = recipe.name;
+        recipeContainer.appendChild(card);
+      })}
+    } else {
+      console.log('no response yet...');
+    }
+  };
+  httpRecipes.open("GET", "/", true);
+  httpRecipes.send();
+};
+
+</script>
+</html>

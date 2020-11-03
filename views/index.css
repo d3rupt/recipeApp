@@ -1,0 +1,344 @@
+
+/*----General----*/
+form {
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+  width: 100%;
+}
+.mainContainer {
+  flex-direction: column;
+  overflow: hidden;
+  width: 100vw;
+  height: 100%;
+}
+/*----Navbar----*/
+
+
+.topLeftDash {
+  border-radius: 100%;
+  z-index: 10000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 75px;
+  width: 75px;
+  background-color: #333;
+  align-items: center;
+  justify-content: center;
+  transition: all 1s;
+
+}
+.menuBar {
+  border: 1px solid red;
+  width: 100%;
+  height: 70%;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.bar {
+  width: 100%;
+  height: 5px;
+  color: white;
+  background-color: white;
+  transition: all 0.2s ease-out;
+}
+.bar1Active {
+transform: translate(0, 17px) rotate(45deg);
+}
+.bar2Active {
+transform: translate(-1000px, 0);
+
+}
+.bar3Active {
+  transform: translate(0, -17px) rotate(-45deg);
+}
+
+.avatar {
+  background-image: url('avatar.jpg');
+  background-size: contain;
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
+}
+#logOut {
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 10%;
+  margin: 0;
+}
+.createDiv {
+  width: 10%;
+  justify-content: center;
+}
+
+button {
+  border: 1px solid lightgrey;
+  background-color: #333;
+  color: lightgrey;
+}
+.midSection {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.midLeftDash {
+  align-items: space-around;
+  justify-content: center;
+  border: 1px solid green;
+  left: -100%;
+  top: 0;
+  z-index: 1000;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  transition: all 0.2s;
+}
+.dashContainer {
+  width: 50%;
+  height: 60%;
+  border: 1px solid red;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.midLeftDashActive {
+  left: 0;
+}
+
+.mainActive {
+  width: 100%;
+}
+/*-------------Recipes--------*/
+.recipes {
+  z-index: 1;
+  padding-top: 2.5%;
+  width: 100%;
+  height: 100%;
+  flex-wrap: wrap;
+  align-items: space-around;
+  justify-content: space-around;
+  background-color: rgba(255, 254, 237, 0.5);
+  /*background-image: url('background1-edit.jpg');*/
+  background-repeat: repeat;
+  overflow: scroll;
+}
+.card {
+  margin: 1%;
+  background-color: white;
+  box-shadow: 0px 3px 7px 0px rgba(0,0,0,0.75);
+  position: relative;
+  align-items: center;
+}
+
+.titleCard {
+  cursor: default;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 60%;
+}
+.author {
+  font-size: 1.5em;
+  color: #333;
+}
+.title {
+  text-align: center;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  width: 90%;
+  font-family: "PT Serif";
+}
+.forImage {
+  position: absolute;
+  background-image: url('https://parade.com/wp-content/uploads/2014/05/epicurious-tidal.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 90%;
+  width: 40%;
+  right: 10px;
+  overflow: hidden;
+}
+
+.options {
+top: 30px;
+right: 20px;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+border-radius: 100%;
+background-color: rgba(255,255,255,0.9);
+color: #333;
+width: 30px;
+height: 30px;
+box-shadow: 2px 3px 3px 0px rgba(0,0,0,0.5);
+position: absolute;
+transition: all 0.25s ease;
+}
+
+
+.inactive{
+background-color: rgba(255,255,255,0);
+color: rgba(0,0,0,0);
+box-shadow: none;
+}
+
+.active {
+width: 100%;
+margin-left: 0;
+border-radius: 2px;
+}
+
+.break {
+height: 1px;
+width: 50%;
+background-color: #333;
+}
+.trash, .edit {
+  padding: 5%;
+  margin: 5%;
+  background-color: white;
+  color: #333;
+  box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+}
+
+.trash:hover, .edit:hover {
+  width: 30px;
+  height: 30px;
+  background-color: #333;
+  color: white;
+}
+
+.optionsWrapper {
+  z-index: -1;
+  position: absolute;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  width: 20%;
+  right: 0;
+  opacity: 0;
+  transition: all 0.25s ease-in-out;
+
+}
+.card:hover > .optionsWrapper {
+  right: -20%;
+  opacity: 1;
+}
+body {
+  margin: 0;
+}
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto';
+}
+.container{
+  display: flex;
+}
+table {
+  width: 100%;
+}
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+.col-ss-1 {width: 8.33%;}
+.col-ss-2 {width: 16.66%;}
+.col-ss-3 {width: 25%;}
+.col-ss-4 {width: 33.33%;}
+.col-ss-5 {width: 41.66%;}
+.col-ss-6 {width: 50%;}
+.col-ss-7 {width: 58.33%;}
+.col-ss-8 {width: 66.66%;}
+.col-ss-9 {width: 75%;}
+.col-ss-10 {width: 83.33%;}
+.col-ss-11 {width: 91.66%;}
+.col-ss-12 {width: 100%;}
+.card {
+  height: 30%;
+}
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+.col-s-1 {width: 8.33%;}
+.col-s-2 {width: 16.66%;}
+.col-s-3 {width: 25%;}
+.col-s-4 {width: 33.33%;}
+.col-s-5 {width: 41.66%;}
+.col-s-6 {width: 50%;}
+.col-s-7 {width: 58.33%;}
+.col-s-8 {width: 66.66%;}
+.col-s-9 {width: 75%;}
+.col-s-10 {width: 83.33%;}
+.col-s-11 {width: 91.66%;}
+.col-s-12 {width: 100%;}
+
+.card {
+  height: 40%;
+}
+
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .col-m-1 {width: 8.33%;}
+ .col-m-2 {width: 16.66%;}
+ .col-m-3 {width: 25%;}
+ .col-m-4 {width: 33.33%;}
+ .col-m-5 {width: 41.66%;}
+ .col-m-6 {width: 50%;}
+ .col-m-7 {width: 58.33%;}
+ .col-m-8 {width: 66.66%;}
+ .col-m-9 {width: 75%;}
+ .col-m-10 {width: 83.33%;}
+ .col-m-11 {width: 91.66%;}
+ .col-m-12 {width: 100%;}
+ .card {
+   height: 40%;
+ }
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .col-1 {width: 8.33%;}
+ .col-2 {width: 16.66%;}
+ .col-3 {width: 25%;}
+ .col-4 {width: 33.33%;}
+ .col-5 {width: 41.66%;}
+ .col-6 {width: 50%;}
+ .col-7 {width: 58.33%;}
+ .col-8 {width: 66.66%;}
+ .col-9 {width: 75%;}
+ .col-10 {width: 83.33%;}
+ .col-11 {width: 91.66%;}
+ .col-12 {width: 100%;}
+ .card {
+   height:30%;
+ }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .col-l-1 {width: 8.33%;}
+ .col-l-2 {width: 16.66%;}
+ .col-l-3 {width: 25%;}
+ .col-l-4 {width: 33.33%;}
+ .col-l-5 {width: 41.66%;}
+ .col-l-6 {width: 50%;}
+ .col-l-7 {width: 58.33%;}
+ .col-l-8 {width: 66.66%;}
+ .col-l-9 {width: 75%;}
+ .col-l-10 {width: 83.33%;}
+ .col-l-11 {width: 91.66%;}
+ .col-l-12 {width: 100%;}
+}

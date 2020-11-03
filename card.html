@@ -1,0 +1,153 @@
+<style>
+  * {
+    font-family: 'Roboto';
+  }
+  .container{
+    display: flex;
+  }
+
+  .background {
+    position: relative;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 300px;
+    background-repeat: no-repeat;
+    width: 600px;
+    background-size: cover;
+    background-image: url('https://picturecorrect-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/professional-food-photos-1.jpg')
+  }
+  .title {
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0,0,0,0.66);
+    height:75px;
+    width: 100%;
+  }
+
+.title > p {
+  color: white;
+  font-size: 1.5em;
+}
+.options {
+  flex-direction: row;
+  margin-right: 10px;
+  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  background-color: rgba(255,255,255,0.5);
+  color: #333;
+  width: 40px;
+  height: 40px;
+  box-shadow: 2px 3px 3px 0px rgba(0,0,0,0.5);
+  position: relative;
+  transition: all 0.25s ease;
+}
+.optionsTab {
+  position: absolute;
+  flex-direction: column;
+  width:0;
+  height: 100px;
+  background-color: rgba(255,255,255,0.75);
+  transition: width 0.25s ease-in-out;
+  top:10px;right:20px;
+}
+.fa {
+  transition: all 0.25s ease;
+}
+.inactive{
+  background-color: rgba(255,255,255,0);
+  color: rgba(0,0,0,0);
+  box-shadow: none;
+}
+
+.active {
+  width: 200px;
+  border: 0.5px solid #333;
+  border-radius: 2px;
+}
+
+.fa-times {
+display: none;
+  transition: all 0.25s;
+}
+.fa-times.active {
+  display: block;
+  color: #333;
+  top: 5px;
+  left: 5px;
+}
+
+.links {
+  display: none;
+
+}
+.links.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 1s ease;
+}
+
+</style>
+
+<body>
+<div class="container background">
+  <div class="container">
+    <div class="container optionsTab">
+      <i class=" fa fa-times"></i>
+      <div class="container links">
+        <a class="a">Edit</a>
+        <a class="a">Delete</a>
+        <a class="a">Share</a>
+      </div>
+    </div>
+    <div class="container options" onclick="optionsExpand()">
+      <i class="fa fa-ellipsis-v fa-2x" onclick="optionsExpand()" aria-hidden="true"></i>
+    </div>
+</div>
+  <div class="container title">
+    <p>Greek burger with arugula & goat cheese</p>
+  </div>
+</div>
+
+<script>
+  let options = document.querySelector('.options');
+  let optionsTab = document.querySelector('.optionsTab');
+  let ellipsis = document.querySelector('.fa-ellipsis-v');
+  let xClose = document.querySelector(".fa-times");
+  let links = document.querySelector('.links');
+
+//  let xClose = document.createElement("I");
+//xClose.classList.add('fa', 'fa-times');
+
+  function optionsExpand() {
+    xClose.addEventListener("click", optionsSmaller);
+    options.classList.add('inactive');
+    ellipsis.classList.add('inactive');
+    setTimeout(() => {
+      optionsTab.classList.add('active');
+      setTimeout(() => {
+        xClose.classList.add('active');
+        links.classList.add('active');
+      }, 250);
+    }, 250);
+
+
+  }
+
+  function optionsSmaller() {
+    optionsTab.classList.remove('active');
+    xClose.classList.remove('active');
+    links.classList.remove('active');
+    setTimeout(() => {
+      options.classList.remove('inactive');
+      ellipsis.classList.remove('inactive');
+    }, 250);
+
+  }
+</script>
+
+</body>

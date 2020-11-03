@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html>
+<link type="text/css" href="login.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+<style>
+
+* {
+  font-family: "Roboto";
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+}
+body {
+  margin: 0;
+}
+.main {
+  flex-wrap: nowrap;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+}
+.pic {
+  background-image: url('https://repairheatingandcooling.com/wp-content/uploads/2019/10/Commercial-Kitchen-Ventilation.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 65%;
+  height: 100%;
+}
+.login {
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 35%;
+}
+.form {
+  padding: 5%;
+  width: 100%;
+  height: 70%;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+}
+form {
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+  width: 100%;
+}
+input {
+  outline: none;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  height: 20%;
+  transition: border 0.25s ease-in-out;
+}
+
+input:focus {
+  border: 1.5px solid rgb(82, 135, 255);
+}
+button {
+  height: 20%;
+}
+</style>
+<body>
+<div class="container main">
+  <div class="container pic"></div>
+  <div class="container login">
+    <div class="container form">
+      <h1>Register</h1>
+      <% if (messages.error) { %>
+        <%= messages.error %>
+      <% } %>
+      <form class="container" action="/register" method="POST">
+        <input type="text" id="username" name="username" placeholder="Username" required>
+        <input type="text" id="email" name="email" placeholder="Email" required>
+        <input type="text" id="password" name="password" placeholder="Password" required>
+        <button type="submit">Register</button>
+      </form>
+      <a href="/login">Or, sign in if you have an account.</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
