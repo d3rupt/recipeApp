@@ -1,62 +1,83 @@
 <!DOCTYPE html>
-
-<style>
-  .main {
-    background-color: white;
-    align-items: center;
-    height: 100vh;
-    width: 80%;
-    flex-direction: column;
-    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
-  }
-  .title {
-  }
-
-  .form {
-    flex-direction: column;
-  }
-  .happy {
-    flex-direction: column;
-  }
-  table {
-    width: 100%;
-    border: 1px solid #333;
-    border-collapse: collapse;
-
-  }
-  th {
-    background-color: lightgrey;
-    width: 50%;
-    border: 1px solid #333;
-  }
-  td {
-    border: 1px solid #333;
-  }
-  .title {
-    justify-content: center;
-  }
-  </style>
-
-    <div class="container main">
-      <div class="backButton">
-        <button class="backButton" onclick="window.location.href='/home'">Go back</button>
-      </div>
-        <div class="container title">
-          <h1 id="viewsTitle">How does it look?</h1>
-        </div>
-
-        <div class="container form col-ss-12 col-s-12 col-m-10 col-8 col-l-8">
-          <table class="ingredientTableFinal">
-            <tr>
-              <th>Ingredients</th>
-              <th>Amounts</th>
-            </tr>
-          </table>
-          <br>
-          <table class="instructionsTableFinal">
-            <tr>
-              <th>Instructions</th>
-            </tr>
-          </table>
-      </div>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css" />
+<script src="https://kit.fontawesome.com/6cc08cc3c7.js" crossorigin="anonymous" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+  <div class="container main">
+    <div class="container backButton" onclick="window.location.href='/home'">
+      <i class="fas fa-arrow-left fa-lg"></i>
     </div>
+      <div class="container title">
+        <h1 id="viewsTitle">How does it look?</h1>
+      </div>
+
+      <div class="container form col-ss-12 col-s-12 col-m-10 col-8 col-l-8">
+        <table class="ingredientTableFinal">
+          <tr>
+            <th>Ingredients</th>
+            <th>Amounts</th>
+          </tr>
+        </table>
+        <br>
+        <table class="instructionsTableFinal">
+          <tr>
+            <th>Instructions</th>
+          </tr>
+        </table>
+    </div>
+  </div>
+</body>
+<script>
+window.onload = () => {
+let httpView = new XMLHttpRequest;
+httpView.onload = () => {
+if (httpView.readyState == XMLHttpRequest.DONE && httpView.status == 200) {
+  let recipe = JSON.parse(httpView.responseText);
+  console.log(recipe);
+  let ingredientsList = document.querySelector('.ingredientTableFinal');
+  let instructionsList = document.querySelector(".instructionsTableFinal");
+  let viewsTitle = document.getElementById('viewsTitle');
+  viewsTitle.innerHTML = recipe.name;
+  recipe.ingredients.forEach(ingredient => {
+    const cell1 = document.createElement('td');
+    const cell2 = document.createElement('td');
+    const row = document.createElement('tr');
+    console.log(ingredient[0]);
+    cell1.innerText = ingredient[0];
+    console.log(cell1.innerHTML);
+    cell2.innerText = ingredient[1];
+    row.appendChild(cell1);
+    row.appendChild(cell2);
+    cell1.classList.add('ingredient');
+    cell2.classList.add('amount');
+    ingredientsList.appendChild(row);
+
+    cell1.addEventListener('click', () => {
+      cell1.contentEditable = 'true';
+    })
+    cell2.addEventListener('click', () => {
+      cell2.contentEditable = 'true';
+    })
+  })
+  recipe.instructions.forEach(instruction => {
+    console.log(instruction);
+    const cell1 = document.createElement('td');
+    const row = document.createElement('tr');
+    cell1.innerText = instruction;
+    cell1.classList.add('instruction');
+    row.appendChild(cell1);
+    instructionsList.appendChild(row);
+
+  })
+}
+}
+httpView.open("GET", "/getrecipe", true);
+httpView.send();
+}
+</script>
+</html>

@@ -1,95 +1,136 @@
 <!DOCTYPE html>
-
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css" />
+<script src="https://kit.fontawesome.com/6cc08cc3c7.js" crossorigin="anonymous" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
 <style>
-tr {
-}
-  .main {
-    background-color: white;
+  .editButton {
     align-items: center;
-    height: 100vh;
-    width: 80%;;
-    flex-direction: column;
-  }
-  .title {
-  }
-
-  .form {
-    flex-direction: column;
-  }
-  .happy {
-    flex-direction: column;
-  }
-  table {
-    border: 1px solid #333;
-    border-collapse: collapse;
-  }
-  th {
-    background-color: lightgrey;
-    width: 50%;
-    border: 1px solid #333;
-  }
-  td {
-    border: 1px solid #333;
-  }
-  .title {
     justify-content: center;
+    background: #333;
+    color: white;
+    border: 1px solid white;
+    outline: 1px solid #333;
+    height: 25px;
+    margin-right: 2.5%;
   }
-  </style>
-    <div class="container main">
-      <div class="backButton">
-        <button class="backButton" onclick="window.location.href='/home'">Go back</button>
-      </div>
-      <div class="container title">
-        <h1 id="editsTitle" contenteditable="true">How does it look?</h1>
-      </div>
-      <div class="container form col-ss-12 col-s-12 col-m-10 col-8 col-l-8">
-        <div class="ingredientsTable">
-					<button onclick="
-					let rowAdd = document.createElement('tr');
-					let ingAdd = document.createElement('td');
-					ingAdd.innerHTML = ' ';
-					ingAdd.classList.add('ingredient');
-					ingAdd.contentEditable = 'true';
-					let amtAdd = document.createElement('td')
-					amtAdd.classList.add('amount');
-					amtAdd.contentEditable = 'true';
-					amtAdd.innerHTML = ' ';
-					console.log(ingAdd);
-					rowAdd.appendChild(ingAdd);
-					rowAdd.appendChild(amtAdd);
-					console.log('2');
-					let ingTable = document.querySelector('.ingredientTableFinal');
-					console.log('3');
-					ingTable.appendChild(rowAdd);">
-					+</button>
-        <table class="ingredientTableFinal">
-          <tr>
-            <th>Ingredients</th>
-            <th>Amounts</th>
-          </tr>
-        </table>
-      </div>
-      <div class='instructionsTable'>
-				<button onclick="
-				let rowAdd = document.createElement('tr');
-				let instAdd = document.createElement('td');
-				instAdd.innerHTML = ' ';
-				instAdd.classList.add('ingredient');
-				instAdd.contentEditable = 'true';
-
-				rowAdd.appendChild(instAdd);
-				console.log('2');
-				let instTable = document.querySelector('.instructionsTableFinal');
-				console.log('3');
-				instTable.appendChild(rowAdd);">
-
-				+</button>
-        <table class="instructionsTableFinal">
-          <tr>
-            <th>Instructions</th>
-          </tr>
-        </table>
-        <button class="submitEdit" onclick="sendEdit()">Submit changes</button>
-</div>
+  .addButton {
+    width: 25px;
+  }
+</style>
+<body>
+  <div class="container main">
+    <div class="container backButton" onclick="window.location.href='/home'">
+      <i class="fas fa-arrow-left fa-lg"></i>
     </div>
+    <div class="container title">
+      <h1 id="editsTitle" contenteditable="true">How does it look?</h1>
+    </div>
+    <div class="container form col-ss-12 col-s-12 col-m-10 col-10 col-l-10">
+      <div class="container table ingredientsTable">
+        <div class="container editButton addButton" onclick="addIngredient()">
+          <p>
+            +
+          </p>
+        </div>
+      <table class="ingredientTableFinal">
+        <tr>
+          <th>Ingredients</th>
+          <th>Amounts</th>
+        </tr>
+      </table>
+    </div>
+    <div class='container table instructionsTable'>
+      <div class="container editButton addButton" onclick="addInstruction()">
+        <p>
+          +
+        </p>
+      </div>
+      <table class="instructionsTableFinal">
+        <tr>
+          <th>Instructions</th>
+        </tr>
+      </table>
+</div>
+<button class="submitEdit" onclick="sendEdit()">Save</button>
+
   </div>
+</div>
+</body>
+<script>
+let httpView = new XMLHttpRequest;
+httpView.onload = () => {
+if (httpView.readyState == XMLHttpRequest.DONE && httpView.status == 200) {
+  let recipe = JSON.parse(httpView.responseText);
+  console.log(recipe);
+
+  let ingredientsList = document.querySelector('.ingredientTableFinal');
+  let instructionsList = document.querySelector(".instructionsTableFinal");
+  let editsTitle = document.getElementById('editsTitle');
+  editsTitle.innerHTML = recipe.name;
+  recipe.ingredients.forEach(ingredient => {
+    const cell1 = document.createElement('td');
+    const cell2 = document.createElement('td');
+    const row = document.createElement('tr');
+    console.log(ingredient[0]);
+    cell1.innerText = ingredient[0];
+    console.log(cell1.innerHTML);
+    cell2.innerText = ingredient[1];
+    row.appendChild(cell1);
+    row.appendChild(cell2);
+    cell1.classList.add('ingredient');
+    cell2.classList.add('amount');
+    ingredientsList.appendChild(row);
+
+      cell1.contentEditable = 'true';
+      cell2.contentEditable = 'true';
+  })
+  recipe.instructions.forEach(instruction => {
+    console.log(instruction);
+    const cell3 = document.createElement('td');
+    const row = document.createElement('tr');
+    cell3.innerText = instruction;
+    cell3.classList.add('instruction');
+    row.appendChild(cell3);
+    instructionsList.appendChild(row);
+      cell3.contentEditable = 'true';
+    })
+  }
+}
+httpView.open("GET", "/getrecipe", true);
+httpView.send();
+
+function addIngredient() {
+  let rowAdd = document.createElement('tr');
+  let ingAdd = document.createElement('td');
+  ingAdd.innerHTML = ' ';
+  ingAdd.classList.add('ingredient');
+  ingAdd.contentEditable = 'true';
+  let amtAdd = document.createElement('td')
+  amtAdd.classList.add('amount');
+  amtAdd.contentEditable = 'true';
+  amtAdd.innerHTML = ' ';
+  console.log(ingAdd);
+  rowAdd.appendChild(ingAdd);
+  rowAdd.appendChild(amtAdd);
+  console.log('2');
+  let ingTable = document.querySelector('.ingredientTableFinal');
+  console.log('3');
+  ingTable.appendChild(rowAdd);
+}
+function addInstruction() {
+let rowAdd = document.createElement('tr');
+let instAdd = document.createElement('td');
+instAdd.innerHTML = ' ';
+instAdd.classList.add('ingredient');
+instAdd.contentEditable = 'true';
+rowAdd.appendChild(instAdd);
+let instTable = document.querySelector('.instructionsTableFinal');
+instTable.appendChild(rowAdd);
+}
+</script>
+</html>
