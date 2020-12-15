@@ -11,7 +11,7 @@
   <div class="container midLeftDash dash">
     <div class="container dashContainer">
     <div class="container createDiv">
-      <p onclick="getPages('/create')">
+      <p onclick="window.location.href = '/create'">
         Create
       </p>
     </div>
@@ -21,7 +21,7 @@
       </p>
     </div>
     <div class="container createDiv">
-      <p onclick="getPages('/create')" style="color: rgba(255,255,255,0.5)">
+      <p onclick="getPages('/settings')" style="color: rgba(255,255,255,0.5)">
         Settings
       </p>
     </div>
@@ -59,25 +59,22 @@
   let dash = document.querySelector('.midLeftDash');
   let xClose;
   let links = document.querySelector('.links');
-  document.querySelector('.topLeftDash').addEventListener('click', () => {
+  document.querySelector('.topLeftDash').addEventListener('click', (event) => {
      document.querySelector('.bar1').classList.toggle('bar1Active');
      document.querySelector('.bar2').classList.toggle('bar2Active');
      document.querySelector('.bar3').classList.toggle('bar3Active');
      dash.classList.toggle('midLeftDashActive');
-     /*if (dash.style.left != '0') {
-       dash.style.left = '0';
-     }
-     if (dash.style.left == '0'){
-       dash.style.left = '-100%';
+  /*   if (!event.target.classList.contains('midLeftDash') && dash.classList.contains('midLeftDashActive')) {
+       dash.classList.remove('midLeftDashActive');
      }*/
-   },true)
-  document.body.addEventListener('click', (event) => {
+   })
+  /*document.body.addEventListener('click', (event) => {
     if (!event.target.classList.contains('midLeftDash')) {
       if (dash.classList.contains('midLeftDashActive')) {
         dash.classList.remove('midLeftDashActive')
       }
     }
-  })
+  })*/
 //---Populate recipe card list-----
 
 function createCards(optionsSmaller, optionsExpand) {

@@ -1,41 +1,14 @@
 <!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css" />
+<script src="https://kit.fontawesome.com/6cc08cc3c7.js" crossorigin="anonymous" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
 
-<style>
-tr {
-}
-  .main {
-    background-color: white;
-    align-items: center;
-    height: 100vh;
-    width: 80%;;
-    flex-direction: column;
-  }
-  .title {
-  }
-
-  .form {
-    flex-direction: column;
-  }
-  .happy {
-    flex-direction: column;
-  }
-  table {
-    width: 100%;
-    border: 1px solid #333;
-    border-collapse: collapse;
-  }
-  th {
-    background-color: lightgrey;
-    width: 50%;
-    border: 1px solid #333;
-  }
-  td {
-    border: 1px solid #333;
-  }
-  .title {
-    justify-content: center;
-  }
-  </style>
+  <body>
     <div class="container main">
       <div class="backButton">
         <button class="backButton" onclick="window.location.href='/home'">Go back</button>
@@ -45,23 +18,23 @@ tr {
       </div>
       <div class="container form col-ss-12 col-s-12 col-m-10 col-8 col-l-8">
         <div class="ingredientsTable">
-					<button onclick="
-					let rowAdd = document.createElement('tr');
-					let ingAdd = document.createElement('td');
-					ingAdd.innerHTML = ' ';
-					ingAdd.classList.add('ingredient');
-					ingAdd.contentEditable = 'true';
-					let amtAdd = document.createElement('td')
-					amtAdd.classList.add('amount');
-					amtAdd.contentEditable = 'true';
-					console.log(ingAdd);
-					rowAdd.appendChild(ingAdd);
-					rowAdd.appendChild(amtAdd);
-					console.log('2');
-					let ingTable = document.querySelector('.ingredientTableFinal');
-					console.log('3');
-					ingTable.appendChild(rowAdd);">
-					+</button>
+          <button onclick="
+          let rowAdd = document.createElement('tr');
+          let ingAdd = document.createElement('td');
+          ingAdd.innerHTML = ' ';
+          ingAdd.classList.add('ingredient');
+          ingAdd.contentEditable = 'true';
+          let amtAdd = document.createElement('td')
+          amtAdd.classList.add('amount');
+          amtAdd.contentEditable = 'true';
+          console.log(ingAdd);
+          rowAdd.appendChild(ingAdd);
+          rowAdd.appendChild(amtAdd);
+          console.log('2');
+          let ingTable = document.querySelector('.ingredientTableFinal');
+          console.log('3');
+          ingTable.appendChild(rowAdd);">
+          +</button>
         <table class="ingredientTableFinal">
           <tr>
             <th>Ingredients</th>
@@ -70,19 +43,19 @@ tr {
         </table>
       </div>
       <div class='instructionsTable'>
-				<button onclick="
-				let rowAdd = document.createElement('tr');
-				let instAdd = document.createElement('td');
-				instAdd.classList.add('instruction');
-				instAdd.contentEditable = 'true';
+        <button onclick="
+        let rowAdd = document.createElement('tr');
+        let instAdd = document.createElement('td');
+        instAdd.classList.add('instruction');
+        instAdd.contentEditable = 'true';
 
-				rowAdd.appendChild(instAdd);
-				console.log('2');
-				let instTable = document.querySelector('.instructionsTableFinal');
-				console.log('3');
-				instTable.appendChild(rowAdd);">
+        rowAdd.appendChild(instAdd);
+        console.log('2');
+        let instTable = document.querySelector('.instructionsTableFinal');
+        console.log('3');
+        instTable.appendChild(rowAdd);">
 
-				+</button>
+        +</button>
         <table class="instructionsTableFinal">
           <tr>
             <th>Instructions</th>
@@ -92,3 +65,5 @@ tr {
 </div>
     </div>
   </div>
+  </body>
+  </html>

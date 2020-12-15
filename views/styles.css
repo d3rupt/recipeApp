@@ -10,8 +10,6 @@
 .form {
   align-items: center;
   flex-direction: column;
-  border: 1px solid red;
-
 }
 .happy {
   flex-direction: column;
@@ -78,8 +76,6 @@ form {
   height: 100%;
 }
 /*----Navbar----*/
-
-
 .topLeftDash {
   cursor: pointer;
   border-radius: 50%;
@@ -158,7 +154,7 @@ button {
   justify-content: center;
   left: -20%;
   top: 0;
-  z-index: 10000000;
+  z-index: 1000;
   position: absolute;
   width: 20%;
   height: 100%;
